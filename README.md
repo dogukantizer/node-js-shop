@@ -20,3 +20,6 @@ git add .
 git commit -m "initial"
 git remote add origin https://github.com/dogukantizer/node-js-shop.git
 git push -u origin master
+
+***docker cloud***
+https://www.youtube.com/watch?v=F82K07NmRpk&list=PLlj9BrHKq9WKaz8UV3BjEqicn-C3qHxy4&index=9&t=0s
