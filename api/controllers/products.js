@@ -1,5 +1,7 @@
 const Product = require('../models/product');
 const mongoose = require('mongoose');
+const redis = require('redis');
+const client = redis.createClient(6379, '127.0.0.1');
 
 exports.products_get_all = (req, res, next) =>{
     
@@ -76,26 +78,47 @@ exports.products_create_product = (req, res, next) =>{
 exports.products_get_product = (req, res, next) => {
 
     const id = req.params.productId;
-    Product.findById(id).select("name price _id").exec().then(doc => {
-        console.log("From database", doc);
-        if(doc){
-            res.status(200).json({
-                product: doc,
-                request: {
-                    type: 'GET',
-                    url: 'http://localhost:3001/products'
-                }
-            });
+
+    client.get(req.body.id, function(err, value){
+
+        if(err) {
+            return console.log(err);
+        }
+
+        if(value) {
+            console.log("RETURN CACHED DATA")
+            res.json(JSON.parse(value));
         } else {
-            res.status(404).json({
-                message: 'No valid entery found for provide ID'
+
+            Product.findById(id).select("name price _id").exec().then(doc => {
+                console.log("From database", doc);
+                if(doc){
+                    console.log("RETURN DB DATA");
+                    const resBody = {
+                        product: doc,
+                        request: {
+                            type: 'GET',
+                            url: 'http://localhost:3001/products'
+                        }
+                    }
+                    client.set(req.params.id, JSON.stringify(resBody));
+                    res.status(200).json(resBody);
+                } else {
+                    res.status(404).json({
+                        message: 'No valid entery found for provide ID'
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({error: err});
             });
+
         }
     })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({error: err});
-    });
+
+
+    
 
     /*const id = req.params.productId;
     if(id == 'special'){
