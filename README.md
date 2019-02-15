@@ -1,5 +1,38 @@
 # node-js-shop
 
+***node installations***
+
+yükleme: npm install --save express
+
+server başlatma: node server.js
+
+server durdurma: cntrl+c
+
+otomatik server: npm install --save-dev nodemon
+
+otomatik server başlatma: npm start
+
+log + error handling: npm install --save morgan
+
+body parser: npm install --save body-parser
+
+mongo db kurulum: npm install --save mongoose
+
+image yüklemekte icin: pm install -save multer
+
+node.bcyrpt.js: npm install bcrypt
+
+https://github.com/auth0/node-jsonwebtoken
+npm install jsonwebtoken -save
+
+https://jwt.io/
+
+https://www.youtube.com/watch?v=ucuNgSOFDZ0&list=PL55RiY5tL51q4D-B63KBnygU6opNPFk_q&index=14
+
+visual studio code + postman
+
+postgreSql : npm install --save pg
+
 ***basic docker commands***
 
 docker build -t dogukan .
