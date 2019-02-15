@@ -68,3 +68,8 @@ git push -u origin master
 ***docker cloud***
 
 https://www.youtube.com/watch?v=F82K07NmRpk&list=PLlj9BrHKq9WKaz8UV3BjEqicn-C3qHxy4&index=9&t=0s
+
+***redis installation***
+
+https://www.youtube.com/watch?v=JGvbEk4jtrU
+
