@@ -1,7 +1,14 @@
 const Product = require('../models/product');
 const mongoose = require('mongoose');
 const redis = require('redis');
-const client = redis.createClient(6379, '127.0.0.1');
+
+//local inet ip for local redis connection
+const client = redis.createClient(6379, '10.243.34.16');
+
+//const client = redis.createClient(6379, '127.0.0.1');
+//const client = redis.createClient({
+//    host: 'redis'
+//});
 
 exports.products_get_all = (req, res, next) =>{
     
