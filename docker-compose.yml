@@ -1,0 +1,10 @@
+version: '2'
+services:
+  application:
+    build: .
+    command: "npm start"
+    ports:
+      - 3002:3001
+    volumes:
+      - .:/app/
+      - /app/node_modules
