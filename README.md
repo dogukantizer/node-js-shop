@@ -51,6 +51,9 @@ docker stop 43
 
 docker run -it -p 3002:3001 dogukan
 
+silme : docker rm -f $(docker ps -aq)
+
+image silme : docker image rm -f $(docker image ls -aq)
 
 ***basic git commands***
 
