@@ -76,3 +76,14 @@ https://www.youtube.com/watch?v=F82K07NmRpk&list=PLlj9BrHKq9WKaz8UV3BjEqicn-C3qH
 
 https://www.youtube.com/watch?v=JGvbEk4jtrU
 
+***elastic kibana***
+
+https://www.youtube.com/watch?v=vk9oW1qNRb4
+
+kibana : http://localhost:5601
+
+pino : npm install pino
+
+pino : npm install pino-socket
+
+pino-socker : npm install --production -g pino-socket
