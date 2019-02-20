@@ -80,3 +80,10 @@ https://www.youtube.com/watch?v=JGvbEk4jtrU
 
 https://www.youtube.com/watch?v=vk9oW1qNRb4
 
+kibana : http://localhost:5601
+
+pino : npm install pino
+
+pino : npm install pino-socket
+
+pino-socker : npm install --production -g pino-socket

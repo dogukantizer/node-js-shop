@@ -3,12 +3,14 @@ const mongoose = require('mongoose');
 const redis = require('redis');
 
 //local inet ip for local redis connection
-const client = redis.createClient(6379, '10.243.34.16');
+const client = redis.createClient(6379, '10.243.34.115');
 
 //const client = redis.createClient(6379, '127.0.0.1');
 //const client = redis.createClient({
 //    host: 'redis'
 //});
+const pino = require('pino')();
+
 
 exports.products_get_all = (req, res, next) =>{
     
@@ -84,6 +86,9 @@ exports.products_create_product = (req, res, next) =>{
 
 exports.products_get_product = (req, res, next) => {
 
+    pino.info('hello world 123');
+    pino.error('this is at error level 123');
+    
     const id = req.params.productId;
 
     client.get(req.body.id, function(err, value){

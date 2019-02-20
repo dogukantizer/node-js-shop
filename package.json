@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js | pino-socket -a 10.243.34.115 -p 5000 -m tcp"
   },
   "keywords": [
     "node",
@@ -23,6 +23,8 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
     "pg": "^7.8.0",
+    "pino": "^5.11.1",
+    "pino-socket": "^1.0.1",
     "redis": "^2.8.0"
   },
   "devDependencies": {
