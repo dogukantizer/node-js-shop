@@ -8,7 +8,7 @@ const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/user');
 
-mongoose.connect('mongodb://node-shop:'+ process.env.MONGO_ATLAS_PW +'@cluster0-shard-00-00-xbuxb.mongodb.net:27017,cluster0-shard-00-01-xbuxb.mongodb.net:27017,cluster0-shard-00-02-xbuxb.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&w=1', {
+mongoose.connect('mongodb://node-shop:'+ process.env.MONGO_ATLAS_PW +'@cluster0-shard-00-00-xbuxb.mongodb.net:27017,cluster0-shard-00-01-xbuxb.mongodb.net:27017,cluster0-shard-00-02-xbuxb.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true', {
     useNewUrlParser: true
 });
 mongoose.Promise = global.Promise;
