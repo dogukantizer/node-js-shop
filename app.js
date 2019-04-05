@@ -8,11 +8,15 @@ const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/user');
 
-mongoose.connect('mongodb://node-shop:'+ process.env.MONGO_ATLAS_PW +'@cluster0-shard-00-00-xbuxb.mongodb.net:27017,cluster0-shard-00-01-xbuxb.mongodb.net:27017,cluster0-shard-00-02-xbuxb.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true', {
-    useNewUrlParser: true
+var errorhandler = require('errorhandler')
+
+mongoose.connect('mongodb+srv://node-shop:node-shop@cluster0-xbuxb.mongodb.net/test?retryWrites=true', {
+    useNewUrlParser: true,
+    useCreateIndex: true
 });
 mongoose.Promise = global.Promise;
-
+//app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+app.use(errorhandler({ dumpExceptions: true, showStack: true }))
 app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: false}));
