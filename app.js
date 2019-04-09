@@ -7,6 +7,15 @@ const mongoose = require('mongoose');
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/user');
+const poolRoutes = require('./api/routes/pool');
+
+var socketserver = require('http').createServer();
+var io = require('socket.io')(socketserver);
+
+io.on('connection', () =>{
+    console.log('a user is connected')
+})
+socketserver.listen(8080);
 
 var errorhandler = require('errorhandler')
 
@@ -29,12 +38,14 @@ app.use((req, res, next) =>{
         res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE');
         return res.status(200).json({});
     }
+    res.io = io
     next(); 
 });
 
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/user', userRoutes);
+app.use('/pool', poolRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not found');
