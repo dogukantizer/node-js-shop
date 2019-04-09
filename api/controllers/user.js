@@ -23,7 +23,10 @@ exports.user_signup = (req, res, next) => {
                     const user = new User({
                         _id: new moongose.Types.ObjectId(),
                         email: req.body.email,
-                        password: hash
+                        password: hash,
+                        gender: req.body.gender,
+                        age: req.body.age,
+                        country: req.body.country
                     });
                     user
                     .save()
