@@ -1,4 +1,5 @@
 const Pool = require('../models/pool');
+const Room = require('../models/room');
 const moongose = require('mongoose');
 
 exports.pool_create_pool = (req, res, next) => {
@@ -12,6 +13,7 @@ exports.pool_create_pool = (req, res, next) => {
             userId: req.body.userId,
             gender: req.body.gender,
             interestedGender: req.body.interestedGender,
+            roomId: '',
             status: 'W'
         });
         pool.save().then(result => {
@@ -45,7 +47,9 @@ exports.pool_create_pool = (req, res, next) => {
     });
 }
 
-exports.pool_match_user =  (req, res, next) =>  {
+var roomId
+exports.pool_match_user = (req, res, next) => {
+
 
     Pool.findById(req.params.poolId).exec()
         .then(currentPool => {
@@ -60,32 +64,44 @@ exports.pool_match_user =  (req, res, next) =>  {
                             message: 'Target pool not found'
                         });
                     }
-                    var targetPool = targetPools[0]
+                    if (targetPools.length > 0) {
+                        var targetPool = targetPools[0]
 
-                    // create room
+                        // create room
+                        const roomResult = await createRoom(currentPool.userId, targetPool.userId)
+                        if (roomResult == "Success") {
+                            // update current and target pool
+                            const currentUserResult = await updateUserPool(currentPool._id)
+                            if (currentUserResult == "Success") {
+                                console.log('Current Update Success')
 
-                    // update current and target pool
-                    const currentUserResult = await updateUserPool(currentPool._id)
-                    if(currentUserResult == "Success"){
-                        console.log('Current Update Success')
+                                const targetUserResult = await updateUserPool(targetPool._id)
+                                if (targetUserResult == "Success") {
+                                    console.log('Target Update Success')
+                                }
+                            }
 
-                        const targetUserResult = await updateUserPool(targetPool._id)
-                        if(targetUserResult == "Success"){
-                            console.log('Target Update Success')
+                            // emit target pool user
+                            res.io.emit(targetPool._id, 'Matched');
                         }
+
+
+                        res.status(200).json({
+                            count: targetPools.length,
+                            pools: targetPools.map(targetPool => {
+                                return {
+                                    pool: targetPool
+                                }
+                            })
+                        });
+                    } else {
+
+                        res.status(200).json({
+                            count: 0,
+                            message: "target not found"
+                        });
                     }
 
-                    // emit target pool user
-                    res.io.emit(targetPool._id, 'Matched');
-
-                    res.status(200).json({
-                        count: targetPools.length,
-                        pools: targetPools.map(targetPool => {
-                            return {
-                                pool: targetPool
-                            }
-                        })
-                    });
                 })
                 .catch(err => {
                     res.status(500).json({
@@ -102,16 +118,40 @@ exports.pool_match_user =  (req, res, next) =>  {
 
 }
 
+async function createRoom(userId1, userId2) {
+
+    return new Promise((resolve, reject) => {
+
+        const rool = new Room({
+            _id: new moongose.Types.ObjectId(),
+            user: [{ userId: userId1, userStatus: 'A' },
+            { userId: userId2, userStatus: 'A' }],
+            status: 'A',
+            roomLevel: '1'
+        });
+        rool.save().then(result => {
+            console.log(result);
+            console.log("create room success");
+            roomId = result._id
+            resolve("Success")
+        })
+            .catch(err => {
+                console.log(err);
+                resolve("Fail")
+            });
+    });
+}
+
 async function updateUserPool(id) {
 
     return new Promise((resolve, reject) => {
 
         const updateOps = {};
         updateOps['status'] = 'M';
-        //updateOps['roomId'] = 'M';
-        
+        updateOps['roomId'] = roomId;
+
         Pool.updateOne({ _id: id }, { $set: updateOps }).exec().then(result => {
-            
+
             resolve("Success")
         }).catch(err => {
             console.log(err);
